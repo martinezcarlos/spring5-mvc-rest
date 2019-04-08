@@ -9,13 +9,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Created by carlosmartinez on 2019-04-08 20:18
  */
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/customers/")
+@RequestMapping("/api/v1/customers")
 @Controller
 public class CustomerController {
 
@@ -27,8 +29,13 @@ public class CustomerController {
         HttpStatus.OK);
   }
 
-  @GetMapping({"{id}"})
+  @GetMapping({"/{id}"})
   public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable final Long id) {
     return new ResponseEntity<>(customerService.getCustomerById(id), HttpStatus.OK);
+  }
+
+  @PostMapping
+  public ResponseEntity<CustomerDTO> createCustomer(@RequestBody final CustomerDTO customerDTO) {
+    return new ResponseEntity<>(customerService.createCustomer(customerDTO), HttpStatus.CREATED);
   }
 }

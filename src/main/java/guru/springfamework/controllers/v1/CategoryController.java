@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * Created by carlosmartinez on 2019-04-08 18:38
  */
-@RequestMapping("/api/v1/categories/")
+@RequestMapping("/api/v1/categories")
 @Controller
 public class CategoryController {
 
@@ -30,7 +30,7 @@ public class CategoryController {
         HttpStatus.OK);
   }
 
-  @GetMapping("{name}")
+  @GetMapping("/{name}")
   public ResponseEntity<CategoryDTO> getCategoryByName(@PathVariable final String name) {
     return new ResponseEntity<>(categoryService.getCategoryByName(name), HttpStatus.OK);
   }
