@@ -1,0 +1,37 @@
+package guru.springfamework.services;
+
+import guru.springfamework.api.v1.mappers.CustomerMapper;
+import guru.springfamework.api.v1.model.CustomerDTO;
+import guru.springfamework.repositories.CustomerRepository;
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+/**
+ * Created by carlosmartinez on 2019-04-08 20:14
+ */
+@RequiredArgsConstructor
+@Service
+public class CustomerServiceImpl implements CustomerService {
+
+  private final CustomerMapper customerMapper;
+  private final CustomerRepository customerRepository;
+
+  @Override
+  public List<CustomerDTO> getAllCustomers() {
+    return customerRepository.findAll().stream().map(customer -> {
+      CustomerDTO customerDTO = customerMapper.entityToDTO(customer);
+      customerDTO.setCustomerUrl("/api/v1/customers/" + customer.getId());
+      return customerDTO;
+    }).collect(Collectors.toList());
+  }
+
+  @Override
+  public CustomerDTO getCustomerById(final Long id) {
+
+    return customerRepository.findById(id)
+        .map(customerMapper::entityToDTO)
+        .orElseThrow(RuntimeException::new); //todo implement better exception handling
+  }
+}
