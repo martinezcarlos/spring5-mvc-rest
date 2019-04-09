@@ -4,7 +4,7 @@ import guru.springfamework.api.v1.model.CustomerDTO;
 import guru.springfamework.domain.Customer;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Created by carlosmartinez on 2019-04-08 20:23
@@ -16,7 +16,7 @@ class CustomerMapperTest {
   private final CustomerMapper customerMapper = CustomerMapper.INSTANCE;
 
   @Test
-  public void entityToDTO() throws Exception {
+  void entityToDTO() {
     //given
     final Customer customer = new Customer();
     customer.setFirstname(FIRSTNAME);

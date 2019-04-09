@@ -18,6 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by carlosmartinez on 2019-04-08 20:25
  */
-public class CustomerControllerTest extends AbstractRestControllerTest {
+class CustomerControllerTest extends AbstractRestControllerTest {
 
   @Mock
   private CustomerService customerService;
@@ -37,13 +38,13 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
   private MockMvc mockMvc;
 
   @BeforeEach
-  public void setUp() throws Exception {
+  void setUp() {
     MockitoAnnotations.initMocks(this);
     mockMvc = MockMvcBuilders.standaloneSetup(customerController).build();
   }
 
   @Test
-  public void testListCustomers() throws Exception {
+  void testListCustomers() throws Exception {
 
     //given
     final CustomerDTO customer1 = new CustomerDTO();
@@ -64,7 +65,7 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
   }
 
   @Test
-  public void testGetCustomerById() throws Exception {
+  void testGetCustomerById() throws Exception {
 
     //given
     final CustomerDTO customer1 = new CustomerDTO();
@@ -81,7 +82,7 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
   }
 
   @Test
-  public void createCustomer() throws Exception {
+  void createCustomer() throws Exception {
     //given
     final CustomerDTO customer = new CustomerDTO();
     customer.setFirstname("Fred");
@@ -103,7 +104,7 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
   }
 
   @Test
-  public void testUpdateCustomer() throws Exception {
+  void testUpdateCustomer() throws Exception {
     //given
     final CustomerDTO customer = new CustomerDTO();
     customer.setFirstname("Fred");
@@ -119,6 +120,28 @@ public class CustomerControllerTest extends AbstractRestControllerTest {
 
     //when/then
     mockMvc.perform(put("/api/v1/customers/1").contentType(MediaType.APPLICATION_JSON)
+        .content(asJsonString(customer)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.firstname", equalTo("Fred")))
+        .andExpect(jsonPath("$.lastname", equalTo("Flintstone")))
+        .andExpect(jsonPath("$.customer_url", equalTo("/api/v1/customers/1")));
+  }
+
+  @Test
+  void testPatchCustomer() throws Exception {
+
+    //given
+    final CustomerDTO customer = new CustomerDTO();
+    customer.setFirstname("Fred");
+
+    final CustomerDTO returnDTO = new CustomerDTO();
+    returnDTO.setFirstname(customer.getFirstname());
+    returnDTO.setLastname("Flintstone");
+    returnDTO.setCustomerUrl("/api/v1/customers/1");
+
+    when(customerService.patchCustomer(anyLong(), any(CustomerDTO.class))).thenReturn(returnDTO);
+
+    mockMvc.perform(patch("/api/v1/customers/1").contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(customer)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.firstname", equalTo("Fred")))

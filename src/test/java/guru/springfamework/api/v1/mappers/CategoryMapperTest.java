@@ -4,7 +4,7 @@ import guru.springfamework.api.v1.model.CategoryDTO;
 import guru.springfamework.domain.Category;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Created by carlosmartinez on 2019-04-08 16:02

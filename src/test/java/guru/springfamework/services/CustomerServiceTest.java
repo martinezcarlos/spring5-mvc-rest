@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 /**
  * Created by carlosmartinez on 2019-04-08 20:28
  */
-public class CustomerServiceTest {
+class CustomerServiceTest {
 
   private final CustomerMapper customerMapper = CustomerMapper.INSTANCE;
   @Mock
@@ -27,22 +27,22 @@ public class CustomerServiceTest {
   private CustomerService customerService;
 
   @BeforeEach
-  public void setUp() throws Exception {
+  void setUp() {
     MockitoAnnotations.initMocks(this);
 
     customerService = new CustomerServiceImpl(customerMapper, customerRepository);
   }
 
   @Test
-  public void getAllCustomers() throws Exception {
+  void getAllCustomers() {
     //given
     final Customer customer1 = new Customer();
-    customer1.setId(1l);
+    customer1.setId(1L);
     customer1.setFirstname("Michale");
     customer1.setLastname("Weston");
 
     final Customer customer2 = new Customer();
-    customer2.setId(2l);
+    customer2.setId(2L);
     customer2.setFirstname("Sam");
     customer2.setLastname("Axe");
 
@@ -56,15 +56,14 @@ public class CustomerServiceTest {
   }
 
   @Test
-  public void getCustomerById() throws Exception {
+  void getCustomerById() {
     //given
     final Customer customer1 = new Customer();
-    customer1.setId(1l);
+    customer1.setId(1L);
     customer1.setFirstname("Michale");
     customer1.setLastname("Weston");
 
-    when(customerRepository.findById(anyLong())).thenReturn(
-        java.util.Optional.ofNullable(customer1));
+    when(customerRepository.findById(anyLong())).thenReturn(java.util.Optional.of(customer1));
 
     //when
     final CustomerDTO customerDTO = customerService.getCustomerById(1L);
@@ -81,7 +80,7 @@ public class CustomerServiceTest {
     final Customer savedCustomer = new Customer();
     savedCustomer.setFirstname(customerDTO.getFirstname());
     savedCustomer.setLastname(customerDTO.getLastname());
-    savedCustomer.setId(1l);
+    savedCustomer.setId(1L);
 
     when(customerRepository.save(any(Customer.class))).thenReturn(savedCustomer);
 

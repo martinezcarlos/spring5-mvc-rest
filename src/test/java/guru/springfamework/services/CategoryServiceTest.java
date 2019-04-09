@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -33,7 +33,7 @@ class CategoryServiceTest {
   }
 
   @Test
-  public void getAllCategories() throws Exception {
+  void getAllCategories() {
 
     //given
     final List<Category> categories = Arrays.asList(Category.builder().build(),
@@ -49,7 +49,7 @@ class CategoryServiceTest {
   }
 
   @Test
-  public void getCategoryByName() throws Exception {
+  void getCategoryByName() {
 
     //given
     final Category category = Category.builder().id(ID).name(NAME).build();

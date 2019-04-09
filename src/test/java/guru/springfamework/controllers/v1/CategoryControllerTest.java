@@ -43,13 +43,13 @@ class CategoryControllerTest {
   }
 
   @Test
-  public void testListCategories() throws Exception {
+  void testListCategories() throws Exception {
     final CategoryDTO category1 = new CategoryDTO();
-    category1.setId(1l);
+    category1.setId(1L);
     category1.setName(NAME);
 
     final CategoryDTO category2 = new CategoryDTO();
-    category2.setId(2l);
+    category2.setId(2L);
     category2.setName("Bob");
 
     final List<CategoryDTO> categories = Arrays.asList(category1, category2);
@@ -62,9 +62,9 @@ class CategoryControllerTest {
   }
 
   @Test
-  public void testGetByNameCategories() throws Exception {
+  void testGetByNameCategories() throws Exception {
     final CategoryDTO category1 = new CategoryDTO();
-    category1.setId(1l);
+    category1.setId(1L);
     category1.setName(NAME);
 
     when(categoryService.getCategoryByName(anyString())).thenReturn(category1);

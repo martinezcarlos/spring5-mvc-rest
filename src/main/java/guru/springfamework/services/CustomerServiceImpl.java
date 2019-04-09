@@ -23,7 +23,7 @@ public class CustomerServiceImpl implements CustomerService {
   public List<CustomerDTO> getAllCustomers() {
     return customerRepository.findAll().stream().map(customer -> {
       CustomerDTO customerDTO = customerMapper.entityToDTO(customer);
-      customerDTO.setCustomerUrl("/api/v1/customers/" + customer.getId());
+      customerDTO.setCustomerUrl(String.format("/api/v1/customers/%d", customer.getId()));
       return customerDTO;
     }).collect(Collectors.toList());
   }
@@ -31,9 +31,11 @@ public class CustomerServiceImpl implements CustomerService {
   @Override
   public CustomerDTO getCustomerById(final Long id) {
 
-    return customerRepository.findById(id)
-        .map(customerMapper::entityToDTO)
-        .orElseThrow(RuntimeException::new); //todo implement better exception handling
+    return customerRepository.findById(id).map(c -> {
+      CustomerDTO dto = customerMapper.entityToDTO(c);
+      dto.setCustomerUrl(String.format("/api/v1/customer/%d", id));
+      return dto;
+    }).orElseThrow(RuntimeException::new); //todo implement better exception handling
   }
 
   @Override
@@ -46,6 +48,22 @@ public class CustomerServiceImpl implements CustomerService {
     final Customer customer = customerMapper.dtoToEntity(customerDTO);
     customer.setId(id);
     return saveAndReturnDTO(customer);
+  }
+
+  @Override
+  public CustomerDTO patchCustomer(final Long id, final CustomerDTO customerDTO) {
+    return customerRepository.findById(id).map(customer -> {
+
+      if (customerDTO.getFirstname() != null) {
+        customer.setFirstname(customerDTO.getFirstname());
+      }
+
+      if (customerDTO.getLastname() != null) {
+        customer.setLastname(customerDTO.getLastname());
+      }
+
+      return saveAndReturnDTO(customer);
+    }).orElseThrow(RuntimeException::new); //todo implement better exception handling;
   }
 
   private CustomerDTO saveAndReturnDTO(final Customer customer) {
