@@ -4,6 +4,7 @@ import guru.springfamework.api.v1.mappers.CustomerMapper;
 import guru.springfamework.api.v1.model.CustomerDTO;
 import guru.springfamework.controllers.v1.CustomerController;
 import guru.springfamework.domain.Customer;
+import guru.springfamework.exceptions.ResourceNotFoundException;
 import guru.springfamework.repositories.CustomerRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,7 +37,7 @@ public class CustomerServiceImpl implements CustomerService {
       CustomerDTO dto = customerMapper.entityToDTO(c);
       dto.setCustomerUrl(getCustomerUrl(id));
       return dto;
-    }).orElseThrow(RuntimeException::new); //todo implement better exception handling
+    }).orElseThrow(ResourceNotFoundException::new);
   }
 
   @Override
@@ -64,7 +65,7 @@ public class CustomerServiceImpl implements CustomerService {
       }
 
       return saveAndReturnDTO(customer);
-    }).orElseThrow(RuntimeException::new); //todo implement better exception handling;
+    }).orElseThrow(ResourceNotFoundException::new);
   }
 
   @Override
