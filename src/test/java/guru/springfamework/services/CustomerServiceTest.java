@@ -14,6 +14,8 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -90,5 +92,34 @@ class CustomerServiceTest {
     //then
     assertEquals(customerDTO.getFirstname(), savedDto.getFirstname());
     assertEquals("/api/v1/customer/1", savedDto.getCustomerUrl());
+  }
+
+  @Test
+  void saveCustomerByDTO() {
+
+    //given
+    final CustomerDTO customerDTO = new CustomerDTO();
+    customerDTO.setFirstname("Jim");
+
+    final Customer savedCustomer = new Customer();
+    savedCustomer.setFirstname(customerDTO.getFirstname());
+    savedCustomer.setLastname(customerDTO.getLastname());
+    savedCustomer.setId(1L);
+
+    when(customerRepository.save(any(Customer.class))).thenReturn(savedCustomer);
+
+    //when
+    final CustomerDTO savedDto = customerService.saveCustomerByDTO(1L, customerDTO);
+
+    //then
+    assertEquals(customerDTO.getFirstname(), savedDto.getFirstname());
+    assertEquals("/api/v1/customer/1", savedDto.getCustomerUrl());
+  }
+
+  @Test
+  void deleteCustomerById() {
+    final Long id = 1L;
+    customerService.deleteCustomerById(id);
+    verify(customerRepository, times(1)).deleteById(anyLong());
   }
 }
