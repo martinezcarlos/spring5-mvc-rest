@@ -20,10 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by carlosmartinez on 2019-04-08 20:18
  */
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/customers")
+@RequestMapping(CustomerController.BASE_URL)
 @Controller
 public class CustomerController {
 
+  public static final String BASE_URL = "/api/v1/customers";
   private final CustomerService customerService;
 
   @GetMapping

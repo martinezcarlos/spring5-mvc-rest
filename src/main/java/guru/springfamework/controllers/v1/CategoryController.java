@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * Created by carlosmartinez on 2019-04-08 18:38
  */
-@RequestMapping("/api/v1/categories")
+@RequestMapping(CategoryController.BASE_URL)
 @Controller
 public class CategoryController {
 
+  static final String BASE_URL = "/api/v1/categories";
   private final CategoryService categoryService;
 
   public CategoryController(final CategoryService categoryService) {

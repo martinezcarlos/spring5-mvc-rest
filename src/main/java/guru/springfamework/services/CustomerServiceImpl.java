@@ -2,6 +2,7 @@ package guru.springfamework.services;
 
 import guru.springfamework.api.v1.mappers.CustomerMapper;
 import guru.springfamework.api.v1.model.CustomerDTO;
+import guru.springfamework.controllers.v1.CustomerController;
 import guru.springfamework.domain.Customer;
 import guru.springfamework.repositories.CustomerRepository;
 import java.util.List;
@@ -23,7 +24,7 @@ public class CustomerServiceImpl implements CustomerService {
   public List<CustomerDTO> getAllCustomers() {
     return customerRepository.findAll().stream().map(customer -> {
       CustomerDTO customerDTO = customerMapper.entityToDTO(customer);
-      customerDTO.setCustomerUrl(String.format("/api/v1/customers/%d", customer.getId()));
+      customerDTO.setCustomerUrl(getCustomerUrl(customer.getId()));
       return customerDTO;
     }).collect(Collectors.toList());
   }
@@ -33,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     return customerRepository.findById(id).map(c -> {
       CustomerDTO dto = customerMapper.entityToDTO(c);
-      dto.setCustomerUrl(String.format("/api/v1/customer/%d", id));
+      dto.setCustomerUrl(getCustomerUrl(id));
       return dto;
     }).orElseThrow(RuntimeException::new); //todo implement better exception handling
   }
@@ -74,7 +75,11 @@ public class CustomerServiceImpl implements CustomerService {
   private CustomerDTO saveAndReturnDTO(final Customer customer) {
     final Customer savedCustomer = customerRepository.save(customer);
     final CustomerDTO returningDTO = customerMapper.entityToDTO(savedCustomer);
-    returningDTO.setCustomerUrl("/api/v1/customer/" + savedCustomer.getId());
+    returningDTO.setCustomerUrl(getCustomerUrl(savedCustomer.getId()));
     return returningDTO;
+  }
+
+  private String getCustomerUrl(final Long id) {
+    return String.format("%s/%d", CustomerController.BASE_URL, id);
   }
 }
