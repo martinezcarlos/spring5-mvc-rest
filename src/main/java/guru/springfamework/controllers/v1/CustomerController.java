@@ -3,6 +3,8 @@ package guru.springfamework.controllers.v1;
 import guru.springfamework.api.v1.model.CustomerDTO;
 import guru.springfamework.api.v1.model.CustomerListDTO;
 import guru.springfamework.services.CustomerService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created by carlosmartinez on 2019-04-08 20:18
  */
+@Api(tags = "Customers", description = "This is my test Customer Controller")
 @RequiredArgsConstructor
 @RequestMapping(CustomerController.BASE_URL)
 @RestController
@@ -27,12 +30,14 @@ public class CustomerController {
   public static final String BASE_URL = "/api/v1/customers";
   private final CustomerService customerService;
 
+  @ApiOperation(value = "This will create a customer", notes = "These are some notes on the API")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public CustomerDTO createCustomer(@RequestBody final CustomerDTO customerDTO) {
     return customerService.createCustomer(customerDTO);
   }
 
+  @ApiOperation(value = "This will get a list of customers", notes = "These are some notes on the API")
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   public CustomerListDTO getListofCustomers() {

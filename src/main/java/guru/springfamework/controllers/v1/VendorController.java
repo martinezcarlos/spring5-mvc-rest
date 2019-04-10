@@ -3,6 +3,8 @@ package guru.springfamework.controllers.v1;
 import guru.springfamework.api.v1.model.VendorDTO;
 import guru.springfamework.api.v1.model.VendorListDTO;
 import guru.springfamework.services.VendorService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created by carlosmartinez on 2019-04-09 16:23
  */
+@Api(tags = "Vendors", description = "This is my Vendor API")
 @RequiredArgsConstructor
 @RequestMapping(VendorController.BASE_URL)
 @RestController
@@ -28,12 +31,14 @@ public class VendorController {
 
   private final VendorService vendorService;
 
+  @ApiOperation(value = "Create a new vendor", notes = "These are some notes")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public VendorDTO createVendor(@RequestBody final VendorDTO vendorDTO) {
     return vendorService.createVendor(vendorDTO);
   }
 
+  @ApiOperation(value = "View list of vendors", notes = "These are some notes")
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   public VendorListDTO getAllVendors() {
@@ -42,18 +47,21 @@ public class VendorController {
     return dto;
   }
 
+  @ApiOperation(value = "Get vendor by ID", notes = "These are some notes")
   @GetMapping({"/{id}"})
   @ResponseStatus(HttpStatus.OK)
   public VendorDTO getVendorById(@PathVariable final Long id) {
     return vendorService.getVendorById(id);
   }
 
+  @ApiOperation(value = "Delete a vendor by ID", notes = "These are some notes")
   @DeleteMapping({"/{id}"})
   @ResponseStatus(HttpStatus.OK)
   public void deleteVendorById(@PathVariable final Long id) {
     vendorService.deleteVendorById(id);
   }
 
+  @ApiOperation(value = "Update a vendor", notes = "These are some notes")
   @PutMapping({"/{id}"})
   @ResponseStatus(HttpStatus.OK)
   public VendorDTO updateVendor(@PathVariable final Long id,
@@ -61,6 +69,7 @@ public class VendorController {
     return vendorService.saveVendorByDTO(id, vendorDTO);
   }
 
+  @ApiOperation(value = "Update only the modified parameters in the vendor", notes = "These are some notes")
   @PatchMapping({"/{id}"})
   @ResponseStatus(HttpStatus.OK)
   public VendorDTO patchVendor(@PathVariable final Long id,
