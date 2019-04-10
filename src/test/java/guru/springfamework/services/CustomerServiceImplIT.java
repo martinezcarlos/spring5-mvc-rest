@@ -6,6 +6,7 @@ import guru.springfamework.bootstrap.Bootstrap;
 import guru.springfamework.domain.Customer;
 import guru.springfamework.repositories.CategoryRepository;
 import guru.springfamework.repositories.CustomerRepository;
+import guru.springfamework.repositories.VendorRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,9 @@ class CustomerServiceImplIT {
   @Autowired
   private CategoryRepository categoryRepository;
 
+  @Autowired
+  private VendorRepository vendorRepository;
+
   private CustomerService customerService;
 
   @BeforeEach
@@ -41,7 +45,8 @@ class CustomerServiceImplIT {
     System.out.println(customerRepository.findAll().size());
 
     //setup data for testing
-    final Bootstrap bootstrap = new Bootstrap(categoryRepository, customerRepository);
+    final Bootstrap bootstrap = new Bootstrap(categoryRepository, customerRepository,
+        vendorRepository);
     bootstrap.run(); //load data
 
     customerService = new CustomerServiceImpl(CustomerMapper.INSTANCE, customerRepository);
